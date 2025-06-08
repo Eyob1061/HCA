@@ -1,0 +1,30 @@
+.dashboard-title {
+  color: #1976d2;
+  font-weight: 500;
+  margin-bottom: 50px !important;
+  padding-top: 50px !important;
+  margin-top: 50px;
+}
+
+.content-container {
+  padding-top: 50px;
+}
+
+.MuiCard-root {
+  transition: transform 0.2s ease-in-out;
+  margin-top: 50px;
+  margin-bottom: 16px;
+}
+
+.MuiCard-root:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-content {
+  padding-top: 2rem;
+}
+
+.update-patient-content {
+  padding-top: 250px;  /* Increased padding specifically for update patient page */
+} 

@@ -1,0 +1,222 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.dashboard-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.chart-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.form-button {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background: linear-gradient(45deg, #3498db, #2c3e50) !important;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-button:hover {
+  background-color: #0056b3;
+}
+
+.dashboard-title {
+  color: #1a237e;
+  margin: 20px 0 30px;
+  font-weight: 600;
+  font-size: 2rem;
+  padding-left: 24px;
+}
+
+.card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  border-radius: 12px !important;
+  height: 140px !important;
+  width: 100% !important;
+  margin-bottom: 20px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-content {
+  display: flex !important;
+  align-items: center !important;
+  gap: 20px;
+  padding: 24px !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+}
+
+.card-content svg {
+  font-size: 48px !important;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(25, 118, 210, 0.1);
+}
+
+.card-content div {
+  flex-grow: 1;
+}
+
+.card-content h5 {
+  color: #5c6bc0;
+  font-weight: 500;
+  margin-bottom: 8px !important;
+  font-size: 1.1rem !important;
+}
+
+.card-content h4 {
+  color: #1a237e;
+  font-weight: 600 !important;
+  font-size: 2rem !important;
+  margin: 0;
+}
+
+.chart-title {
+  color: #1a237e;
+  font-weight: 600;
+  margin-top: 20px !important;
+  margin-bottom: 30px !important;
+  text-align: center;
+}
+
+/* Pie Chart Container Styling */
+.card .recharts-responsive-container {
+  width: 100% !important;
+  height: 400px !important;
+  margin: 20px auto !important;
+}
+
+.recharts-legend-wrapper {
+  padding: 20px !important;
+}
+
+.recharts-default-legend li {
+  margin-right: 20px !important;
+}
+
+/* Grid Container Spacing */
+.MuiGrid-container {
+  padding: 24px !important;
+  margin-top: 40px !important;
+}
+
+/* Special styling for the chart card */
+.card:last-child {
+  height: 500px !important;
+  width: 100% !important;
+  margin-top: 30px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .dashboard-title {
+    font-size: 1.5rem;
+    margin: 15px 0 20px;
+  }
+
+  .card-content {
+    padding: 16px !important;
+  }
+
+  .card-content svg {
+    font-size: 36px !important;
+  }
+
+  .card-content h4 {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

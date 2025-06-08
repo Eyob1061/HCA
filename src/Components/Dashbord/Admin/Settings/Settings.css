@@ -1,0 +1,422 @@
+.settings-container {
+  padding: 32px;
+  background: linear-gradient(to right bottom, #f8f9fa, #e9ecef);
+  min-height: calc(100vh - 64px);
+  border-radius: 16px;
+  max-width: 1400px !important;
+  margin: 0 auto;
+}
+
+.settings-title {
+  margin-bottom: 32px;
+  font-weight: 700;
+  color: #2c3e50;
+  text-align: center;
+  font-size: 2rem;
+  position: relative;
+  padding-bottom: 16px;
+}
+
+.settings-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(to right, #4CAF50, #2196F3);
+  border-radius: 2px;
+}
+
+.profile-card,
+.info-card,
+.password-card,
+.notifications-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.profile-card:hover,
+.info-card:hover,
+.password-card:hover,
+.notifications-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.profile-card {
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.profile-pic-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background: linear-gradient(135deg, #4CAF50, #2196F3);
+  padding: 32px 16px;
+  margin: -16px -16px 16px -16px;
+  text-align: center;
+}
+
+.profile-pic-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(52, 152, 219, 0.2), rgba(44, 62, 80, 0.2));
+  z-index: 1;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  margin-bottom: 16px;
+}
+
+.upload-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #ffffff !important;
+  padding: 10px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.upload-button:hover {
+  background-color: #f8f9fa !important;
+  transform: translateY(-2px);
+}
+
+.section-title {
+  font-size: 1.2rem !important;
+  color: #2c3e50;
+  font-weight: 600 !important;
+  margin-bottom: 20px !important;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title svg {
+  color: #4CAF50;
+  font-size: 20px;
+}
+
+.save-button {
+  background: linear-gradient(45deg, #4CAF50, #45a049) !important;
+  color: white !important;
+  padding: 10px 24px !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  flex: 1;
+  transition: all 0.3s ease !important;
+  margin-top: 20px !important;
+  height: 36px;
+}
+
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+}
+
+.notification-item:hover {
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.notification-item p {
+  margin: 0;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* Form Fields Styling */
+.MuiOutlinedInput-root {
+  background-color: #f8f9fa !important;
+  border-radius: 8px !important;
+}
+
+.MuiOutlinedInput-root:hover {
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused {
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1) !important;
+}
+
+/* Switch Styling */
+.MuiSwitch-root {
+  margin-left: 8px !important;
+}
+
+.MuiSwitch-track {
+  background-color: #cbd5e0 !important;
+}
+
+.MuiSwitch-switchBase.Mui-checked {
+  color: #3498db !important;
+}
+
+.MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+  background-color: #3498db !important;
+}
+
+/* Alert Styling */
+.MuiAlert-root {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  margin-bottom: 24px !important;
+}
+
+/* Card Content Padding */
+.MuiCardContent-root {
+  padding: 16px !important;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Divider Styling */
+.MuiDivider-root {
+  margin: 8px 0 !important;
+  background-color: #e0e0e0 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 960px) {
+  .settings-container {
+    padding: 24px;
+  }
+
+  .settings-title {
+    font-size: 1.75rem;
+    margin-bottom: 24px;
+  }
+
+  .MuiGrid-item {
+    padding: 12px !important;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .settings-container {
+    padding: 16px;
+  }
+
+  .settings-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .profile-avatar {
+    width: 120px !important;
+    height: 120px !important;
+  }
+
+  .MuiGrid-item {
+    padding: 8px !important;
+  }
+
+  .section-title {
+    font-size: 1.2rem !important;
+  }
+}
+
+/* Loading State */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Error State */
+.error-text {
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+/* Success State */
+.success-text {
+  color: #2ecc71;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .profile-card,
+  .info-card,
+  .password-card,
+  .notifications-card {
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .section-title {
+    color: #2c3e50;
+  }
+}
+
+.card-equal-height {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease;
+}
+
+.card-equal-height:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12) !important;
+}
+
+.card-equal-height .MuiCardContent-root {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Adjust grid spacing */
+.MuiGrid-container {
+  margin: 0 !important;
+}
+
+.MuiGrid-item {
+  padding: 12px !important;
+}
+
+/* Ensure consistent card padding */
+.MuiCardContent-root {
+  padding: 16px !important;
+}
+
+/* Adjust profile card specific styles */
+.profile-pic-container {
+  margin: 0;
+  padding: 32px 16px !important;
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-pic-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.profile-avatar {
+  position: relative;
+  z-index: 2;
+  width: 140px !important;
+  height: 140px !important;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  margin-bottom: 16px;
+}
+
+.subsection-title {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: #546e7a;
+  margin-bottom: 20px !important;
+}
+
+.section-content {
+  padding: 24px 0;
+}
+
+.section-divider {
+  margin: 32px 0 !important;
+  background-color: #e0e0e0 !important;
+}
+
+.input-field {
+  margin-bottom: 20px !important;
+}
+
+.input-field .MuiOutlinedInput-root {
+  background-color: #f8f9fa;
+.input-field .MuiOutlinedInput-root {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.input-field .MuiOutlinedInput-root:hover {
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.password-button {
+  background: linear-gradient(45deg, #2196F3, #1976D2) !important;
+  color: white !important;
+  padding: 10px 24px !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  flex: 1;
+  transition: all 0.3s ease !important;
+}
+
+.save-button:hover,
+.password-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-button {
+  margin-top: 1rem;
+}

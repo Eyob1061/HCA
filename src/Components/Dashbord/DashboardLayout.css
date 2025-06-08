@@ -1,0 +1,54 @@
+.menu-item {
+    margin: 8px 12px !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+    color: #666 !important;
+    text-decoration: none !important;
+  }
+  
+  .menu-item:hover {
+    background-color: rgba(25, 118, 210, 0.08) !important;
+    color: #1976d2 !important;
+  }
+  
+  .menu-item.active {
+    background: linear-gradient(45deg, #1976d2, #2196f3) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.2) !important;
+  }
+  
+  .menu-item.active .menu-icon {
+    color: white !important;
+  }
+  
+  .menu-item .menu-icon {
+    color: #666 !important;
+    transition: color 0.3s ease !important;
+  }
+  
+  .menu-item:hover .menu-icon {
+    color: #1976d2 !important;
+  }
+  
+  /* Animation for active indicator */
+  .menu-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 0;
+    background: #1976d2;
+    border-radius: 0 4px 4px 0;
+    transition: height 0.3s ease;
+  }
+  
+  .menu-item.active::before {
+    height: 80%;
+  }
+  
+  /* Hover effect */
+  .menu-item:hover::before {
+    height: 40%;
+  }

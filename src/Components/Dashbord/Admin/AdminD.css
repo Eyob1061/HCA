@@ -1,0 +1,126 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to right, #e3e8f0, #ffffff);
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-title {
+  padding-top: 100px;
+  text-align: center;
+  margin: 20px 0 40px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1a237e;
+}
+
+.MuiGrid-container {
+  padding-top: 100px;
+  margin-top: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.card-content svg {
+  background: linear-gradient(45deg, #3498db, #2c3e50);
+  color: white !important;
+  padding: 16px;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.card-content div {
+  flex-grow: 1;
+}
+
+.card-content h5 {
+  color: #5c6bc0;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.card-content h4 {
+  color: #1a237e;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.chart-card {
+  height: 500px;
+}
+
+.chart-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1a237e;
+  margin-bottom: 20px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .dashboard-title {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+
+  .card {
+    height: auto;
+    padding: 20px;
+  }
+
+  .card-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .card-content svg {
+    width: 48px;
+    height: 48px;
+  }
+
+  .card-content h4 {
+    font-size: 1.8rem;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

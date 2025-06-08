@@ -1,0 +1,114 @@
+{
+  "patients": [
+    {
+      "id": "P001",
+      "firstName": "Abebe",
+      "lastName": "Kebede",
+      "dateOfBirth": "1990-01-01",
+      "gender": "Male",
+      "email": "john.doe@email.com",
+      "phone": "123-456-7890",
+      "address": "123 Main St",
+      "city": "Springfield",
+      "state": "IL",
+      "zipCode": "62701",
+      "medicalHistory": "Hypertension",
+      "currentMedications": "Lisinopril",
+      "allergies": "Penicillin",
+      "bloodGroup": "O+",
+      "weight": "75",
+      "height": "175",
+      "emergencyContact": {
+        "name": "Jane Doe",
+        "relationship": "Spouse",
+        "phone": "098-765-4321"
+      }
+    },
+    {
+      "id": "P002",
+      "firstName": "Alice",
+      "lastName": "Smith",
+      "dateOfBirth": "1985-05-15",
+      "gender": "Female",
+      "email": "alice.smith@email.com",
+      "phone": "123-555-7890",
+      "address": "456 Oak Ave",
+      "city": "Springfield",
+      "state": "IL",
+      "zipCode": "62702",
+      "medicalHistory": "Diabetes",
+      "currentMedications": "Metformin",
+      "allergies": "None",
+      "bloodGroup": "A+",
+      "weight": "65",
+      "height": "165",
+      "emergencyContact": {
+        "name": "Bob Smith",
+        "relationship": "Husband",
+        "phone": "098-555-4321"
+      }
+    }
+  ],
+  "physicians": [
+    {
+      "id": "DR001",
+      "firstName": "Sarah",
+      "lastName": "Smith",
+      "specialization": "Neurologist",
+      "email": "dr.smith@hospital.com",
+      "phone": "555-123-4567",
+      "licenseNumber": "MED12345",
+      "department": "Neurology",
+      "education": "MD, Harvard Medical School",
+      "experience": "15 years",
+      "availability": {
+        "monday": "9:00 AM - 5:00 PM",
+        "tuesday": "9:00 AM - 5:00 PM",
+        "wednesday": "9:00 AM - 5:00 PM",
+        "thursday": "9:00 AM - 5:00 PM",
+        "friday": "9:00 AM - 3:00 PM"
+      }
+    },
+    {
+      "id": "DR002",
+      "firstName": "Michael",
+      "lastName": "Johnson",
+      "specialization": "Cardiologist",
+      "email": "dr.johnson@hospital.com",
+      "phone": "555-987-6543",
+      "licenseNumber": "MED67890",
+      "department": "Cardiology",
+      "education": "MD, Johns Hopkins University",
+      "experience": "20 years",
+      "availability": {
+        "monday": "8:00 AM - 4:00 PM",
+        "tuesday": "8:00 AM - 4:00 PM",
+        "wednesday": "8:00 AM - 4:00 PM",
+        "thursday": "8:00 AM - 4:00 PM",
+        "friday": "8:00 AM - 2:00 PM"
+      }
+    }
+  ],
+  "appointments": [
+    {
+      "id": "APT001",
+      "patientId": "P001",
+      "physicianId": "DR001",
+      "date": "2024-03-20",
+      "time": "10:00 AM",
+      "status": "Scheduled",
+      "type": "Regular Checkup",
+      "notes": "Follow-up appointment"
+    },
+    {
+      "id": "APT002",
+      "patientId": "P002",
+      "physicianId": "DR002",
+      "date": "2024-03-21",
+      "time": "2:00 PM",
+      "status": "Scheduled",
+      "type": "Consultation",
+      "notes": "Initial visit"
+    }
+  ]
+}
