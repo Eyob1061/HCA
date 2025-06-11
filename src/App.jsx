@@ -22,6 +22,8 @@ import ViewAppointments from './Components/Dashbord/Physician/ViewAppointments';
 import UpdatePatient from './Components/Dashbord/Physician/UpdatePatient';
 import RegisterPatient from './Components/Dashbord/Physician/RegisterPatient';
 import PatientAdvice from './Components/Dashbord/Patient/PatientAdvice';
+import ViewPatientReports from './Components/Dashbord/Physician/ViewPatientReports';
+import ViewPatientReportDetail from './Components/Dashbord/Physician/ViewPatientReportDetail';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -101,6 +103,8 @@ function App() {
                 <Route path="view-appointments" element={<ViewAppointments />} />
                 <Route path="register-patient" element={<RegisterPatient />} />
                 <Route path="update-patient" element={<UpdatePatient />} />
+                <Route path="patient-reports" element={<ViewPatientReports />} />
+                <Route path="patient-reports/:reportId" element={<ViewPatientReportDetail />} />
               </Routes>
             } />
           </Routes>

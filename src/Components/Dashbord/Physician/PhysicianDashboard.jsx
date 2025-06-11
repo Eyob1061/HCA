@@ -57,6 +57,12 @@ const PhysicianDashboard = () => {
       onClick: () => navigate('/dashboard/physician/generate-report')
     },
     { 
+      label: 'View Patient Reports', 
+      path: '/dashboard/physician/patient-reports', 
+      icon: <Assignment />,
+      onClick: () => navigate('/dashboard/physician/patient-reports')
+    },
+    { 
       label: 'Insert Advice', 
       path: '/dashboard/physician/insert-advice', 
       icon: <MedicalServices />,

@@ -1,5 +1,9 @@
 import express from 'express';
-import { createPatientReport } from '../controllers/patientreport.controller.js';
+import { 
+  createPatientReport, 
+  getAllPatientReports,
+  getPatientReportById 
+} from '../controllers/patientreport.controller.js';
 import { authenticate, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -10,9 +14,28 @@ router.post(
   authenticate,
   authorize(['physician', 'admin']),
   (req, res, next) => {
-    // Ensure async errors are passed to Express error handler
     Promise.resolve(createPatientReport(req, res)).catch(next);
   }
 );
 
-export default router; 
+// Get all patient reports (physician or admin)
+router.get(
+  '/',
+  authenticate,
+  authorize(['physician', 'admin']),
+  (req, res, next) => {
+    Promise.resolve(getAllPatientReports(req, res)).catch(next);
+  }
+);
+
+// Get a specific patient report by ID (physician or admin)
+router.get(
+  '/:id',
+  authenticate,
+  authorize(['physician', 'admin']),
+  (req, res, next) => {
+    Promise.resolve(getPatientReportById(req, res)).catch(next);
+  }
+);
+
+export default router;
