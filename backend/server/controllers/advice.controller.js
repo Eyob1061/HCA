@@ -8,9 +8,15 @@ import mongoose from 'mongoose';
  * Create a new advice request
  */
 export const createAdvice = async (req, res) => {
+  console.log('=== CREATE ADVICE REQUEST ===');
+  console.log('Request body:', JSON.stringify(req.body, null, 2));
+  console.log('User making request:', req.user ? req.user._id : 'No user in request');
+  
   try {
     let { patientId: bodyPatientId, condition, medications, lifestyle, urgencyLevel } = req.body;
     let patientId = bodyPatientId;
+    
+    console.log('Processing advice for patient ID:', patientId);
 
     // If not a valid ObjectId, resolve by patient code
     if (!mongoose.Types.ObjectId.isValid(patientId)) {
@@ -30,14 +36,34 @@ export const createAdvice = async (req, res) => {
       return res.status(403).json({ success: false, message: 'Patient account is not active. Please contact administrator.' });
     }
 
+    // Log the user making the request
+    console.log('Creating advice with user:', {
+      userId: req.user?._id,
+      userName: req.user?.fullName,
+      userRole: req.user?.role
+    });
+
+    if (!req.user?._id || !req.user?.fullName) {
+      console.error('Missing physician information in request');
+      return res.status(400).json({
+        success: false,
+        message: 'Physician information is missing'
+      });
+    }
+
+    // Set status to 'approved' by default for physician-submitted advice
     const advice = new Advice({
       patientId,
       condition,
       medications,
       lifestyle,
       urgencyLevel,
-      status: 'pending'
+      status: 'approved',
+      physicianId: req.user._id,
+      physicianName: req.user.fullName
     });
+
+    console.log('Advice object to be saved:', JSON.stringify(advice, null, 2));
 
     const savedAdvice = await advice.save();
 
@@ -93,9 +119,20 @@ export const getAllAdvice = async (req, res) => {
 export const getPatientAdvice = async (req, res) => {
   try {
     const patientId = req.user._id;
-    const advice = await Advice.find({ patientId, status: 'approved' })
-      .sort({ createdAt: -1 });
-    res.json({
+    
+    // Find all approved advice for the patient
+    const advice = await Advice.find({ 
+      patientId, 
+      status: 'approved' 
+    })
+    .sort({ createdAt: -1 })
+    .lean() // Convert to plain JavaScript object
+    .exec();
+
+    // Log the retrieved advice for debugging
+    console.log(`Found ${advice.length} advice records for patient ${patientId}`);
+    
+    res.status(200).json({
       success: true,
       data: advice
     });

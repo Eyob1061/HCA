@@ -101,16 +101,22 @@ const PatientDashboard = () => {
       onClick: () => navigate('/dashboard/patient')
     },
     { 
+      label: 'My Medical Advice', 
+      path: '/dashboard/patient/medical-advice', 
+      icon: <MedicalServices />,
+      onClick: () => navigate('/dashboard/patient/medical-advice')
+    },
+    { 
       label: 'Request Advice', 
       path: '/dashboard/patient/request-advice', 
-      icon: <MedicalServices />,
+      icon: <Comment />,
       onClick: () => navigate('/dashboard/patient/request-advice')
     },
     { 
-      label: 'Add Appointment', 
-      path: '/dashboard/patient/add-appointment', 
+      label: 'Appointments', 
+      path: '/dashboard/patient/appointments', 
       icon: <EventNote />,
-      onClick: () => navigate('/dashboard/patient/add-appointment')
+      onClick: () => navigate('/dashboard/patient/appointments')
     },
     { 
       label: 'View Recommendations', 

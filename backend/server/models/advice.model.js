@@ -5,11 +5,12 @@ import mongoose from 'mongoose';
  * @property {string} condition - Medical condition
  * @property {string} medications - Medications
  * @property {string} lifestyle - Lifestyle
- * @property {('Low'|'Normal'|'High'| 'Urgent')} urgencyLevel 
+ * @property {('Low'|'Normal'|'High'|'Urgent')} urgencyLevel 
  * @property {('pending'|'approved'|'rejected')} status
+ * @property {mongoose.Types.ObjectId} physicianId - Reference to the physician who created the advice
+ * @property {string} physicianName - Name of the physician who created the advice
  * @property {Date} createdAt
  * @property {Date} updatedAt
-
  */
 
 const adviceSchema = new mongoose.Schema({
@@ -45,7 +46,16 @@ const adviceSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected'],
-    default: 'pending',
+    default: 'approved',
+    required: true
+  },
+  physicianId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  physicianName: {
+    type: String,
     required: true
   }
 }, {

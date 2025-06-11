@@ -202,7 +202,7 @@ const InsertAdvice = () => {
       const selectedPatient = filteredPatients[0];
       const updatedFormData = {
         ...formData,
-        patientId: selectedPatient._id,
+        patientId: selectedPatient._id || selectedPatient.id,
         patientName: selectedPatient.fullName
       };
       
@@ -252,13 +252,15 @@ const InsertAdvice = () => {
         name: validationData.patientName
       });
     }
-    if (!dataToValidate.condition) {
+    
+    // Validate other required fields
+    if (!validationData.condition) {
       errors.condition = 'Medical condition is required';
     }
-    if (!dataToValidate.advice) {
+    if (!validationData.advice) {
       errors.advice = 'Medical advice is required';
     }
-    if (!dataToValidate.medications) {
+    if (!validationData.medications) {
       errors.medications = 'Medications information is required';
     }
     
@@ -269,44 +271,69 @@ const InsertAdvice = () => {
     }
     
     try {
-      console.log('Form Data:', dataToValidate); // Debug log
+      console.log('Form Data:', dataToValidate);
       
+      // Get the current user (physician)
+      const user = JSON.parse(localStorage.getItem('user'));
+      const token = user?.token;
+      
+      // Prepare the advice data
       const payload = {
         patientId: dataToValidate.patientId,
         condition: dataToValidate.condition,
         advice: dataToValidate.advice,
         medications: dataToValidate.medications,
-        lifestyle: dataToValidate.lifestyle,
-        urgencyLevel: dataToValidate.urgency.charAt(0).toUpperCase() + dataToValidate.urgency.slice(1)
+        lifestyle: dataToValidate.lifestyle || '',
+        urgencyLevel: dataToValidate.urgency.charAt(0).toUpperCase() + dataToValidate.urgency.slice(1),
+        status: 'approved', // Auto-approve physician advice
+        physicianId: user.id, // Track which physician created this advice
+        physicianName: user.fullName // Track physician's name
       };
       
-      console.log('Submitting payload:', payload); // Debug log
+      console.log('Submitting advice:', payload);
       
-      // Get token from user object in localStorage
-      const user = JSON.parse(localStorage.getItem('user'));
-      const token = user?.token;
+      // Submit the advice
+      console.log('Sending POST request to /api/advice with payload:', payload);
+      
       const response = await fetch('http://localhost:5000/api/advice', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        credentials: 'include' // Important for cookies/sessions
       });
-      const data = await response.json();
+      
+      console.log('Response status:', response.status);
+      const responseData = await response.json().catch(e => ({}));
+      console.log('Response data:', responseData);
+      
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to submit advice');
+        const errorMsg = responseData.message || 'Failed to submit advice';
+        console.error('Error response:', errorMsg);
+        throw new Error(errorMsg);
       }
-      alert('Advice submitted successfully!');
+      
+      // Show success message
+      alert('Advice submitted successfully and is now visible to the patient!');
+      
+      // Reset the form
       setFormData({
         patientId: '',
+        patientName: '',
         condition: '',
+        advice: '',
         medications: '',
         lifestyle: '',
         urgency: 'normal'
       });
-    } catch (err) {
-      alert(err.message);
+      setSearchQuery('');
+      
+    } catch (error) {
+      console.error('Error submitting advice:', error);
+      alert(`Failed to submit advice: ${error.message}`);
     }
   };
 
