@@ -46,9 +46,9 @@ const RequestAdvice = () => {
     },
     { 
       label: 'Add Appointment', 
-      path: '/dashboard/patient/add-appointment', 
+      path: '/dashboard/patient/appointments', 
       icon: <EventNote />,
-      onClick: () => navigate('/dashboard/patient/add-appointment')
+      onClick: () => navigate('/dashboard/patient/appointments')
     },
     { 
       label: 'View Recommendations', 
@@ -83,7 +83,12 @@ const RequestAdvice = () => {
         return;
       }
 
-      // Create notification for advice request
+      console.log('Submitting advice request with data:', {
+        subject: formData.subject,
+        description: formData.description,
+        urgency: formData.urgency
+      });
+
       const response = await fetch('http://localhost:5000/api/notifications', {
         method: 'POST',
         headers: {
@@ -91,14 +96,14 @@ const RequestAdvice = () => {
           'Authorization': `Bearer ${user.token}`
         },
         body: JSON.stringify({
-          type: 'advice',
+          type: 'advice_request',
           title: 'New Advice Request',
           message: `Patient ${user.name} is requesting medical advice`,
           urgency: formData.urgency,
           targetRole: 'physician',
           metadata: {
             patientId: user._id,
-            patientName: user.name,
+            patientName: user.name || 'Unknown Patient',
             subject: formData.subject,
             description: formData.description,
             urgency: formData.urgency
@@ -106,19 +111,26 @@ const RequestAdvice = () => {
         })
       });
 
+      const responseData = await response.json().catch(() => ({}));
+      console.log('Response from server:', responseData);
+
       if (!response.ok) {
-        throw new Error('Failed to submit advice request');
+        throw new Error(responseData.error || 'Failed to submit advice request');
       }
 
-      toast.success('Advice request submitted successfully!');
+      alert('✅ Your advice request has been submitted successfully!\n\nA physician will review your request and get back to you soon.');
       setFormData({
         subject: '',
         description: '',
         urgency: 'medium'
       });
     } catch (error) {
-      console.error('Error submitting advice request:', error);
-      toast.error('Failed to submit advice request. Please try again.');
+      console.error('Error details:', {
+        error: error.message,
+        stack: error.stack,
+        response: error.response
+      });
+      toast.error(`Failed to submit advice request: ${error.message}`);
     }
   };
 

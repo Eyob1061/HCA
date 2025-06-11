@@ -114,7 +114,7 @@ const FeedbackForm = () => {
         throw new Error(errorData.message || 'Failed to submit feedback');
       }
 
-      toast.success('Feedback submitted successfully!');
+      alert('✅ Thank you for your feedback!\n\nYour input helps us improve our services.');
       setFormData({
         serviceType: '',
         doctorName: '',
