@@ -46,50 +46,85 @@ const RegisterPatient = () => {
     { label: 'Register Patient', path: '/dashboard/physician/register-patient', icon: <Edit />, onClick: () => navigate('/dashboard/physician/register-patient') }
   ];
 
+  // Function to generate a new patient ID
+  const generatePatientId = (patients) => {
+    try {
+      // Find the highest existing patient ID number
+      let maxNum = 0;
+      patients.forEach(patient => {
+        // Match both 'PA' and 'PAT' prefixes for backward compatibility
+        const match = patient.patientId?.match(/^PA(T)?(\d+)$/i);
+        if (match) {
+          const num = parseInt(match[2], 10);
+          if (num > maxNum) maxNum = num;
+        }
+      });
+      
+      // Generate new ID with format PAT0001, PAT0002, etc.
+      return 'PAT' + String(maxNum + 1).padStart(4, '0');
+    } catch (error) {
+      console.error('Error generating patient ID:', error);
+      // Fallback to timestamp-based ID if there's an error
+      return 'PAT' + Date.now().toString().slice(-4);
+    }
+  };
+
   useEffect(() => {
     if (authLoading || !user?.token) {
       console.log('Auth loading or no user token, skipping fetchPatientsAndGenerateId');
       return;
     }
+    
     if (editingPatient) {
+      // If editing, use the existing patient data
       setFormData({
         ...editingPatient,
         password: '' // Don't show password
       });
       setLoading(false);
     } else {
-      // Auto-generate patientId for new patient
+      // For new patient, generate a new ID
       const fetchPatientsAndGenerateId = async () => {
         setLoading(true);
         try {
-          console.log('Fetching patients with token:', user.token);
+          console.log('Fetching patients to generate new ID');
           const response = await fetch('http://localhost:5000/api/users/patients', {
             headers: { 'Authorization': `Bearer ${user.token}` }
           });
-          console.log('Response status:', response.status);
-          const data = await response.json().catch(() => ({}));
+          
           if (!response.ok) {
-            console.error('Error response from backend:', data);
-            throw new Error(data.message || 'Failed to fetch patients');
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || 'Failed to fetch patients');
           }
+          
+          const data = await response.json();
           const patients = data.data || [];
-          // Find max patientId number
-          let maxNum = 0;
-          patients.forEach(p => {
-            if (p.patientId && /^PA\d+$/.test(p.patientId)) {
-              const num = parseInt(p.patientId.replace('PA', ''), 10);
-              if (num > maxNum) maxNum = num;
-            }
-          });
-          const nextId = 'PA' + String(maxNum + 1).padStart(2, '0');
-          setFormData(f => ({ ...f, patientId: nextId }));
+          
+          // Generate new patient ID
+          const newPatientId = generatePatientId(patients);
+          console.log('Generated new patient ID:', newPatientId);
+          
+          // Update form with new ID
+          setFormData(f => ({
+            ...f,
+            patientId: newPatientId,
+            // Set default values for new patients
+            status: 'active',
+            lastVisit: new Date().toISOString().split('T')[0] // Today's date
+          }));
+          
         } catch (err) {
-          console.error('Error in fetchPatientsAndGenerateId:', err);
-          setError(err.message);
+          console.error('Error generating patient ID:', err);
+          setError(`Failed to generate patient ID: ${err.message}`);
+          
+          // Fallback to timestamp-based ID
+          const fallbackId = 'PAT' + Date.now().toString().slice(-4);
+          setFormData(f => ({ ...f, patientId: fallbackId }));
         } finally {
           setLoading(false);
         }
       };
+      
       fetchPatientsAndGenerateId();
     }
   }, [authLoading, user?.token, editingPatient]);

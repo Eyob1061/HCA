@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import {
   Card,
   CardContent,
-  Typography,
   Grid,
   TextField,
   Button,
@@ -11,6 +10,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormHelperText,
 } from '@mui/material';
 import {
   Dashboard,
@@ -28,6 +28,7 @@ const InsertAdvice = () => {
   const navigate = useNavigate();
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     patientId: '',
     patientName: '',
@@ -37,6 +38,11 @@ const InsertAdvice = () => {
     lifestyle: '',
     urgency: 'normal'
   });
+  
+  // State for patient search
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredPatients, setFilteredPatients] = useState([]);
+  const [showPatientList, setShowPatientList] = useState(false);
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -110,17 +116,66 @@ const InsertAdvice = () => {
     }
   ];
 
-  const handlePatientSelect = (e) => {
-    const selectedId = e.target.value;
-    const selectedPatient = patients.find(p => p._id === selectedId);
+  // Handle patient search input
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
     
-    setFormData(prev => ({
+    if (query.length > 0) {
+      const filtered = patients.filter(patient => 
+        patient.fullName.toLowerCase().includes(query.toLowerCase()) ||
+        (patient.patientId && patient.patientId.toLowerCase().includes(query.toLowerCase()))
+      );
+      setFilteredPatients(filtered);
+      setShowPatientList(true);
+    } else {
+      setFilteredPatients([]);
+      setShowPatientList(false);
+    }
+  };
+
+  // Handle patient selection from search results
+  const handlePatientSelect = (patient) => {
+    // Use either patient._id or patient.id, whichever is available
+    const patientId = patient._id || patient.id;
+    
+    if (!patient || !patientId) {
+      console.error('Invalid patient data:', patient);
+      return;
+    }
+    
+    console.log('Patient selected:', {
+      patientId: patientId,
+      patientName: patient.fullName,
+      patientData: patient
+    });
+    
+    // Create the updated form data first
+    const updatedFormData = {
+      ...formData,
+      patientId: patientId,
+      patientName: patient.fullName
+    };
+    
+    console.log('Updating formData with patient:', updatedFormData);
+    
+    // Update all states in a single batch
+    setFormData(updatedFormData);
+    setSearchQuery(patient.fullName);
+    setShowPatientList(false);
+    
+    // Clear any previous errors
+    setFormErrors(prev => ({
       ...prev,
-      patientId: selectedId,
-      patientName: selectedPatient ? selectedPatient.fullName : ''
+      patientId: undefined
     }));
     
-    console.log('Selected patient:', { id: selectedId, name: selectedPatient?.fullName });
+    // Log the current state after updates
+    console.log('State after patient selection:', {
+      formData: updatedFormData,
+      searchQuery: patient.fullName,
+      showPatientList: false
+    });
   };
 
   const handleChange = (e) => {
@@ -131,22 +186,98 @@ const InsertAdvice = () => {
     }));
   };
 
+  // Validation is now handled directly in handleSubmit
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      console.log('Form Data:', formData); // Debug log
+    
+    console.log('Form submitted. Current formData:', formData);
+    console.log('Search query:', searchQuery);
+    console.log('Filtered patients:', filteredPatients);
+    
+    // First, handle auto-selection if needed
+    if (searchQuery && !formData.patientId && filteredPatients.length === 1) {
+      console.log('Attempting auto-selection...');
+      // Update the form state first
+      const selectedPatient = filteredPatients[0];
+      const updatedFormData = {
+        ...formData,
+        patientId: selectedPatient._id,
+        patientName: selectedPatient.fullName
+      };
       
-      if (!formData.patientId) {
-        throw new Error('Please select a patient');
-      }
+      // Update the form data state
+      setFormData(updatedFormData);
+      setSearchQuery(selectedPatient.fullName);
+      setShowPatientList(false);
+      
+      // Clear any previous patient errors
+      setFormErrors(prev => ({
+        ...prev,
+        patientId: undefined
+      }));
+      
+      // Use the updated form data for validation
+      validateAndSubmit(updatedFormData);
+      return;
+    }
+    
+    // If no auto-selection was needed, proceed with current form data
+    validateAndSubmit(formData);
+  };
+  
+  const validateAndSubmit = async (dataToValidate) => {
+    console.log('Validating form data:', JSON.parse(JSON.stringify(dataToValidate)));
+    
+    // Create a deep copy of the data to validate
+    const validationData = { ...dataToValidate };
+    
+    // Validate the form data
+    const errors = {};
+    
+    // Check for patient selection
+    if (!validationData.patientId) {
+      console.error('Validation failed: No patient ID found');
+      console.log('Current patient data:', {
+        patientId: validationData.patientId,
+        patientName: validationData.patientName
+      });
+      errors.patientId = 'Please select a patient from the list';
+    } else if (!validationData.patientName) {
+      console.error('Validation failed: Patient name missing');
+      errors.patientId = 'Patient name is missing';
+    } else {
+      console.log('Patient selected successfully:', {
+        id: validationData.patientId,
+        name: validationData.patientName
+      });
+    }
+    if (!dataToValidate.condition) {
+      errors.condition = 'Medical condition is required';
+    }
+    if (!dataToValidate.advice) {
+      errors.advice = 'Medical advice is required';
+    }
+    if (!dataToValidate.medications) {
+      errors.medications = 'Medications information is required';
+    }
+    
+    setFormErrors(errors);
+    
+    if (Object.keys(errors).length > 0) {
+      return; // Stop submission if there are errors
+    }
+    
+    try {
+      console.log('Form Data:', dataToValidate); // Debug log
       
       const payload = {
-        patientId: formData.patientId,
-        condition: formData.condition,
-        advice: formData.advice,
-        medications: formData.medications,
-        lifestyle: formData.lifestyle,
-        urgencyLevel: formData.urgency.charAt(0).toUpperCase() + formData.urgency.slice(1)
+        patientId: dataToValidate.patientId,
+        condition: dataToValidate.condition,
+        advice: dataToValidate.advice,
+        medications: dataToValidate.medications,
+        lifestyle: dataToValidate.lifestyle,
+        urgencyLevel: dataToValidate.urgency.charAt(0).toUpperCase() + dataToValidate.urgency.slice(1)
       };
       
       console.log('Submitting payload:', payload); // Debug log
@@ -205,57 +336,74 @@ const InsertAdvice = () => {
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
-                <FormControl fullWidth required>
-                  <InputLabel id="patient-select-label">Select Patient</InputLabel>
-                  <Select
-                    labelId="patient-select-label"
-                    id="patient-select"
-                    name="patientId"
-                    value={formData.patientId || ''}
-                    onChange={handlePatientSelect}
-                    label="Select Patient"
+                <div style={{ position: 'relative', width: '100%' }}>
+                  <TextField
+                    fullWidth
+                    label="Search Patient"
+                    value={formData.patientId ? formData.patientName : searchQuery}
+                    onChange={handleSearchChange}
+                    onFocus={() => searchQuery && setShowPatientList(true)}
+                    error={!!formErrors.patientId}
+                    helperText={formErrors.patientId || 'Type to search for a patient'}
                     disabled={loading}
-                    displayEmpty
-                    renderValue={(selected) => {
-                      if (!selected) return <em>Select a patient</em>;
-                      const patient = patients.find(p => p._id === selected);
-                      return patient ? `${patient.fullName} (ID: ${patient.patientId || 'N/A'})` : 'Unknown patient';
+                    InputProps={{
+                      'aria-required': 'true',
+                      'aria-invalid': !!formErrors.patientId,
                     }}
-                  >
-                    <MenuItem value="" disabled>
-                      <em>Select a patient</em>
-                    </MenuItem>
-                    {patients.map((patient) => (
-                      <MenuItem key={patient._id} value={patient._id}>
-                        <div>
+                  />
+                  {showPatientList && filteredPatients.length > 0 && (
+                    <div style={{
+                      position: 'absolute',
+                      width: '100%',
+                      maxHeight: '300px',
+                      overflowY: 'auto',
+                      backgroundColor: 'white',
+                      border: '1px solid #ccc',
+                      borderRadius: '4px',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                      zIndex: 1000,
+                      marginTop: '4px'
+                    }}>
+                      {filteredPatients.map((patient) => (
+                        <div
+                          key={`patient-${patient._id}`}
+                          onClick={() => handlePatientSelect(patient)}
+                          style={{
+                            padding: '10px',
+                            cursor: 'pointer',
+                            borderBottom: '1px solid #eee',
+                            '&:hover': {
+                              backgroundColor: '#f5f5f5'
+                            }
+                          }}
+                        >
                           <div><strong>{patient.fullName}</strong></div>
                           <div style={{ fontSize: '0.8em', color: '#666' }}>
                             ID: {patient.patientId || 'N/A'}
                           </div>
                         </div>
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <div style={{ marginTop: '10px', padding: '8px', background: '#f5f5f5', borderRadius: '4px' }}>
-                  <div><strong>Selected Patient:</strong> {formData.patientName || 'None'}</div>
-                  {formData.patientId && (
-                    <div style={{ fontSize: '0.9em', color: '#666' }}>
-                      <div>ID: <code>{formData.patientId}</code></div>
-                      <Button 
-                        size="small" 
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => {
-                          setFormData(prev => ({ ...prev, patientId: '', patientName: '' }));
-                        }}
-                        sx={{ mt: 1 }}
-                      >
-                        Change Patient
-                      </Button>
+                      ))}
                     </div>
                   )}
                 </div>
+                {formData.patientId && (
+                  <div style={{ marginTop: '10px', fontSize: '0.9em', color: '#666' }}>
+                    <div>ID: <code>{formData.patientId}</code></div>
+                    <Button 
+                      size="small" 
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => {
+                        setFormData(prev => ({ ...prev, patientId: '', patientName: '' }));
+                        setSearchQuery('');
+                        setShowPatientList(false);
+                      }}
+                      sx={{ mt: 1 }}
+                    >
+                      Change Patient
+                    </Button>
+                  </div>
+                )}
               </Grid>
 
               <Grid item xs={12} md={6}>
@@ -282,6 +430,8 @@ const InsertAdvice = () => {
                   name="condition"
                   value={formData.condition}
                   onChange={handleChange}
+                  error={!!formErrors.condition}
+                  helperText={formErrors.condition}
                   required
                 />
               </Grid>
@@ -293,6 +443,8 @@ const InsertAdvice = () => {
                   name="advice"
                   value={formData.advice}
                   onChange={handleChange}
+                  error={!!formErrors.advice}
+                  helperText={formErrors.advice}
                   multiline
                   rows={4}
                   required
@@ -306,6 +458,8 @@ const InsertAdvice = () => {
                   name="medications"
                   value={formData.medications}
                   onChange={handleChange}
+                  error={!!formErrors.medications}
+                  helperText={formErrors.medications}
                   multiline
                   rows={3}
                   required
